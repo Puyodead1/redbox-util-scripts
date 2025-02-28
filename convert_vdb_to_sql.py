@@ -106,7 +106,7 @@ def convert(vistadb_path, sqlite_path):
 
 if __name__ == "__main__":
     print("Converting, this might take a few minutes")
-    vistadb_file = "./data_files/profile.data.vdb3"
+    vistadb_file = "./data_files/profile_fresh.data.vdb3"
     sqlite_file = "./data_files/profile.data.db"
 
     # clean old sqlite file

@@ -46,12 +46,12 @@ def convert(sqlite_path, vistadb_path):
             return None
         elif isinstance(value, str):
             # If the value is a JSON string (i.e., Lua table), decode it
-            try:
+            if value.startswith("{") and value.startswith("["):
                 decoded_value = json.loads(value)
                 a = lua.encode(decoded_value)
                 return String(a)
-            except json.JSONDecodeError:
-                return String(value)
+
+            return String(value)
         elif isinstance(value, int):
             return Int32(value)
         elif isinstance(value, float):

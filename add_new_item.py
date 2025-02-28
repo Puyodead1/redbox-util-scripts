@@ -192,6 +192,8 @@ if __name__ == "__main__":
     if box_office != "N/A":
         box_office = box_office.replace("$", "").replace(",", "")
         box_office = round(float(box_office) / 1000000)
+    else:
+        box_office = 0
 
     has_cc = False
     has_cc_r = input("Does the movie have closed captioning? (y/[n]): ")
