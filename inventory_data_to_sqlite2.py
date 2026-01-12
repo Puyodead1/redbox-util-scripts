@@ -28,10 +28,10 @@ if __name__ == "__main__":
     for i in range(count):
         barcode = archive.read_barcode(i)
         product_id = archive.read_product_id(i)
-        if product_id == 1139:
-            rep_count += 1
-            bar.update(1)
-            continue
+        # if product_id == 1139:
+        #     rep_count += 1
+        #     bar.update(1)
+        #     continue
 
         # builk insert
         cur.execute("INSERT INTO Barcodes(Barcode, ProductId) VALUES (?, ?)", (barcode, product_id))
