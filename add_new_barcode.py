@@ -47,9 +47,9 @@ if __name__ == "__main__":
             query = new_query
             handle({"barcode": barcode, "search": query})
             return
-        if len(results) > 10:
+        if len(results) > 15:
             print(
-                f"More than 10 results found ({len(results)}) for {query}. Refine search"
+                f"More than 15 results found ({len(results)}) for {query}. Refine search"
             )
             # prompt for new query or skip
             new_query = input("Enter a new query or press Enter to skip: ")

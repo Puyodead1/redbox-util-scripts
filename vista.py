@@ -3,6 +3,7 @@
 import os
 import sys
 from pathlib import Path
+import re
 
 import clr
 
@@ -36,43 +37,28 @@ class VistaHelper:
             command.CommandText = f"""
             SELECT [Key], Value
             FROM {table_name}
-            WHERE LOWER(Value) LIKE @exact
-            OR LOWER(Value) LIKE @startsWith
-            OR LOWER(Value) LIKE @endsWith  
-            OR LOWER(Value) LIKE @contains
+            WHERE LOWER(Value) LIKE @search
             """
 
-            search_lower = search_term.lower()
-
-            param1 = command.CreateParameter()
-            param1.ParameterName = "@exact"
-            param1.Value = f'%name"] = "{search_lower}"%'
-            command.Parameters.Add(param1)
-
-            param2 = command.CreateParameter()
-            param2.ParameterName = "@startsWith"
-            param2.Value = f'%name"] = "{search_lower} %'
-            command.Parameters.Add(param2)
-
-            param3 = command.CreateParameter()
-            param3.ParameterName = "@endsWith"
-            param3.Value = f'%name"] = "% {search_lower}"%'
-            command.Parameters.Add(param3)
-
-            param4 = command.CreateParameter()
-            param4.ParameterName = "@contains"
-            param4.Value = f'%name"] = "% {search_lower} %'
-            command.Parameters.Add(param4)
+            command.Parameters.AddWithValue("@search", f"%{search_term.lower()}%")
 
             reader = command.ExecuteReader()
 
+            pattern = re.compile(
+                r'\[?"?(?:long_name|sort_name)"?\]?\s*=\s*"([^"]*)"', re.IGNORECASE
+            )
+            search_pattern = re.compile(
+                r"\b" + re.escape(search_term) + r"\b", re.IGNORECASE
+            )
+
             while reader.Read():
-                result.append(
-                    (
-                        str(reader["Key"]),
-                        str(reader["Value"]),
-                    )
-                )
+                key = str(reader["Key"])
+                value = str(reader["Value"])
+
+                for title in pattern.findall(value):
+                    if search_pattern.search(title):
+                        result.append((key, value))
+                        break
 
         except Exception as e:
             print(f"Error: {e}")
