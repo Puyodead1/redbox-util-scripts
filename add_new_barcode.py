@@ -120,6 +120,6 @@ if __name__ == "__main__":
             )
             continue
 
-        # handle(entry)
+        handle(entry)
 
     archive.close()
