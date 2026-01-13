@@ -6,8 +6,10 @@ from pathlib import Path
 
 import clr
 
+# add the current directory to the system path
+sys.path.append(os.getcwd())
 # Load the VistaDB DLL
-clr.AddReference("U:/samples/VistaDB.NET20.dll")
+clr.AddReference("VistaDB.NET20")
 
 from System import Array, Byte
 from System.IO import FileAccess, FileMode, FileStream
